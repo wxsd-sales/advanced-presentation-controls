@@ -27,12 +27,12 @@ const LOCAL_RESTORE_DEFAULT = true;
 // to only show presentation content. If your device have has three output
 // you can also change all three to display the presentation.
 const PRES_DUAL_ONLY_ENABLE = true;
-const PRES_TRIPPLE_ONLY_ENABLE = true;
+const PRES_TRIPLE_ONLY_ENABLE = true;
 
 // You can select the default of these options, however only one can be
-// enabled at a time, if Tripple mode is eanbled, then dual will be disabled
+// enabled at a time, if Triple mode is eanbled, then dual will be disabled
 const PRES_DUAL_DEFAULT = true;
-const PRES_TRIPPLE_DEFAULT = false;
+const PRES_TRIPLE_DEFAULT = false;
 
 // The buttons and panel can be completely disabled  altogether and only 
 // the default options will be enabled. The user will not be able to disable
@@ -95,7 +95,7 @@ async function previewStopped(event){
     // If the presentation preview was stopped because we entered 
     // a conference and preview restore is enable we will restore it
 
-    if(!(PRES_DUAL_ONLY_ENABLE || PRES_TRIPPLE_ONLY_ENABLE)){
+    if(!(PRES_DUAL_ONLY_ENABLE || PRES_TRIPLE_ONLY_ENABLE)){
       return;
     }
 
@@ -132,7 +132,7 @@ async function previewStarted(event){
 
   if(event.hasOwnProperty('Cause')){
 
-    if(!((PRES_DUAL_ONLY_ENABLE || PRES_TRIPPLE_ONLY_ENABLE))){
+    if(!((PRES_DUAL_ONLY_ENABLE || PRES_TRIPLE_ONLY_ENABLE))){
       return;
     }
 
@@ -259,7 +259,7 @@ async function updateOutputs(mode) {
   xapi.Config.Video.Output.Connector[2].MonitorRole.set(role);
 
   if(numberOfDisplays == 3){
-    xapi.Config.Video.Output.Connector[3].MonitorRole.set(presentationLayout === TOGGLE_TRIPPLE ? role : 'Auto');
+    xapi.Config.Video.Output.Connector[3].MonitorRole.set(presentationLayout === TOGGLE_TRIPLE ? role : 'Auto');
   }
 
   console.log(`Outputs have been updated: ${role} | ${presentationLayout}`);
@@ -270,7 +270,7 @@ async function callAnswered(event){
 
   if(event == 'Answered'){
 
-    if(!(PRES_DUAL_ONLY_ENABLE || PRES_TRIPPLE_ONLY_ENABLE)){
+    if(!(PRES_DUAL_ONLY_ENABLE || PRES_TRIPLE_ONLY_ENABLE)){
       return;
     }
     const presentationState = await xapi.Status.Conference.Presentation.Mode.get();
@@ -360,10 +360,10 @@ async function syncGui() {
     });
   }
 
-  if(PRES_TRIPPLE_ONLY_ENABLE){
+  if(PRES_TRIPLE_ONLY_ENABLE){
     xapi.Command.UserInterface.Extensions.Widget.SetValue({
-      WidgetId: TOGGLE_TRIPPLE,
-      Value: presentationLayout === TOGGLE_TRIPPLE ? 'on' : 'off',
+      WidgetId: TOGGLE_TRIPLE,
+      Value: presentationLayout === TOGGLE_TRIPLE ? 'on' : 'off',
     });
   }
 }
@@ -387,8 +387,8 @@ function setInitialDefaults(){
   setLocalRestore(localRestore);
 
 
-  if(PRES_TRIPPLE_ONLY_ENABLE && PRES_TRIPPLE_DEFAULT && (numberOfDisplays>2)){
-    setPresentation(PRES_TRIPPLE_DEFAULT, TOGGLE_TRIPPLE);
+  if(PRES_TRIPLE_ONLY_ENABLE && PRES_TRIPLE_DEFAULT && (numberOfDisplays>2)){
+    setPresentation(PRES_TRIPLE_DEFAULT, TOGGLE_TRIPLE);
   } else {
     setPresentation(PRES_DUAL_DEFAULT, TOGGLE_DUAL);
   }
@@ -422,9 +422,9 @@ async function main() {
         //setDualPresentation(event.Value === 'on');
         setPresentation(event.Value === 'on', TOGGLE_DUAL);
         break;
-      case TOGGLE_TRIPPLE:
-        //setTripplePresentation(event.Value === 'on');
-        setPresentation(event.Value === 'on', TOGGLE_TRIPPLE);
+      case TOGGLE_TRIPLE:
+        //setTriplePresentation(event.Value === 'on');
+        setPresentation(event.Value === 'on', TOGGLE_TRIPLE);
         break;
     }      
   });
@@ -446,7 +446,7 @@ async function main() {
 const TOGGLE_AUTO = 'auto_preview';
 const TOGGLE_RESTORE = 'local_preview';
 const TOGGLE_DUAL = 'dual_presentation';
-const TOGGLE_TRIPPLE = 'tripple_presentation';
+const TOGGLE_TRIPLE = 'triple_presentation';
 
 
 // This function will create our control panel and save it.
@@ -487,11 +487,11 @@ function createPanel() {
     </Row>`;
 
   
-  const tripple_row = !PRES_TRIPPLE_ONLY_ENABLE ? '' : (numberOfDisplays>2) ? `
+  const triple_row = !PRES_TRIPLE_ONLY_ENABLE ? '' : (numberOfDisplays>2) ? `
     <Row>
-      <Name>Tripple Presentation</Name>
+      <Name>Triple Presentation</Name>
       <Widget>
-        <WidgetId>${TOGGLE_TRIPPLE}</WidgetId>
+        <WidgetId>${TOGGLE_TRIPLE}</WidgetId>
         <Type>ToggleButton</Type>
         <Options>size=1</Options>
       </Widget>
@@ -513,7 +513,7 @@ function createPanel() {
         ${auto_row}
         ${restore_row}
         ${dual_row}
-        ${tripple_row}
+        ${triple_row}
         <Options/>
       </Page>
     </Panel>
