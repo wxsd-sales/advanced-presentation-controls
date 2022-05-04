@@ -26,13 +26,16 @@ const LOCAL_RESTORE_DEFAULT = true;
 // These options allow you to enable the option for your output displays
 // to only show presentation content. If your device have has three output
 // you can also change all three to display the presentation.
-const PRES_DUAL_ONLY_ENABLE = true;
-const PRES_TRIPLE_ONLY_ENABLE = true;
+const PRES_DUAL_ENABLE = true;
+const PRES_TRIPLE_ENABLE = true;
 
 // You can select the default of these options, however only one can be
 // enabled at a time, if Triple mode is eanbled, then dual will be disabled
 const PRES_DUAL_DEFAULT = true;
 const PRES_TRIPLE_DEFAULT = false;
+
+// The default settings can be applied once the call has ended
+const RESET_DEFAULTS = true;
 
 // The buttons and panel can be completely disabled  altogether and only 
 // the default options will be enabled. The user will not be able to disable
@@ -95,7 +98,7 @@ async function previewStopped(event){
     // If the presentation preview was stopped because we entered 
     // a conference and preview restore is enable we will restore it
 
-    if(!(PRES_DUAL_ONLY_ENABLE || PRES_TRIPLE_ONLY_ENABLE)){
+    if(!(PRES_DUAL_ENABLE || PRES_TRIPLE_ENABLE)){
       return;
     }
 
@@ -132,7 +135,7 @@ async function previewStarted(event){
 
   if(event.hasOwnProperty('Cause')){
 
-    if(!((PRES_DUAL_ONLY_ENABLE || PRES_TRIPLE_ONLY_ENABLE))){
+    if(!((PRES_DUAL_ENABLE || PRES_TRIPLE_ENABLE))){
       return;
     }
 
@@ -270,7 +273,7 @@ async function callAnswered(event){
 
   if(event == 'Answered'){
 
-    if(!(PRES_DUAL_ONLY_ENABLE || PRES_TRIPLE_ONLY_ENABLE)){
+    if(!(PRES_DUAL_ENABLE || PRES_TRIPLE_ENABLE)){
       return;
     }
     const presentationState = await xapi.Status.Conference.Presentation.Mode.get();
@@ -353,14 +356,14 @@ async function syncGui() {
     });
   }
 
-  if(PRES_DUAL_ONLY_ENABLE){
+  if(PRES_DUAL_ENABLE){
     xapi.Command.UserInterface.Extensions.Widget.SetValue({
       WidgetId: TOGGLE_DUAL,
       Value: presentationLayout === TOGGLE_DUAL ? 'on' : 'off',
     });
   }
 
-  if(PRES_TRIPLE_ONLY_ENABLE){
+  if(PRES_TRIPLE_ENABLE && numberOfDisplays>2){
     xapi.Command.UserInterface.Extensions.Widget.SetValue({
       WidgetId: TOGGLE_TRIPLE,
       Value: presentationLayout === TOGGLE_TRIPLE ? 'on' : 'off',
@@ -382,15 +385,25 @@ async function detectOutputs(event){
 // to the device configuration and GUI
 function setInitialDefaults(){
 
+  console.log('Applying defaults');
+
   setAutoPreview(autoPreview);
 
   setLocalRestore(localRestore);
 
-
-  if(PRES_TRIPLE_ONLY_ENABLE && PRES_TRIPLE_DEFAULT && (numberOfDisplays>2)){
+  if(PRES_TRIPLE_ENABLE && PRES_TRIPLE_DEFAULT && (numberOfDisplays>2)){
     setPresentation(PRES_TRIPLE_DEFAULT, TOGGLE_TRIPLE);
   } else {
     setPresentation(PRES_DUAL_DEFAULT, TOGGLE_DUAL);
+  }
+
+}
+
+function callDisconnect() {
+
+  if(RESET_DEFAULTS) {
+    console.log('Call disconnected, applying defaults');
+    setInitialDefaults();
   }
 
 }
@@ -440,6 +453,10 @@ async function main() {
   // Listen for call answers to apply current display preferences
   xapi.Status.Call.AnswerState.on(callAnswered);
 
+  // Listen for call disconnects so we can reset the controls
+  // back to default after a call
+  xapi.Event.CallDisconnect.on(callDisconnect);
+
 }
 
 
@@ -476,7 +493,7 @@ function createPanel() {
     </Row>`;
   
 
-  const dual_row = !PRES_DUAL_ONLY_ENABLE ? '' :`
+  const dual_row = !PRES_DUAL_ENABLE ? '' :`
     <Row>
       <Name>Dual Presentation</Name>
       <Widget>
@@ -487,7 +504,7 @@ function createPanel() {
     </Row>`;
 
   
-  const triple_row = !PRES_TRIPLE_ONLY_ENABLE ? '' : (numberOfDisplays>2) ? `
+  const triple_row = !PRES_TRIPLE_ENABLE ? '' : (numberOfDisplays>2) ? `
     <Row>
       <Name>Triple Presentation</Name>
       <Widget>
