@@ -33,5 +33,4 @@ All these features can easily be enable and set to default behaviours by the con
 
 ## Support
 
-Please reach out to the WXSD team at [wxsd@external.cisco.com](mailto:wxsd@external.cisco.com?cc=wimills@cisco.com&subject=advanced-presentation-controls)
-or contact me on Webex (wimills@cisco.com).
+Please reach out to the WXSD team at [wxsd@external.cisco.com](mailto:wxsd@external.cisco.com?subject=advanced-presentation-controls).
