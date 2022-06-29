@@ -1,4 +1,4 @@
-# Advanced Presentation Controls
+# Advance Presentation Controls
 This macro gives you greater control over how presenations media is shown on your Webex Devices displays. In a multi monitor configuration you may want to use the Main Display which is normally reserved for displaying the receiving video or call information to show the remote or local presentation. Also it gives you greater control of local preview content, by automatically restoring a local preview which was stopped due to a call or Cloud Proximity share.
 
 ## Overview
@@ -21,14 +21,14 @@ All these features can easily be enable and set to default behaviours by the con
 
 ## Setup
 
-1. Download the ``advanced-presentation-controls.js`` file and upload it to your Webex Room devices Macro editor via the web interface.
+1. Download the ``advance-presentation-controls.js`` file and upload it to your Webex Room devices Macro editor via the web interface.
 2. Configure the Macro by toggling the values at the beining of the file.
 3. Enable the Macro on the editor.
 
 ## Uninstall
 
-1. Delete the ``advanced-presentation-controls.js`` Macro from your devices Macro editor.
-2. Delete the UI panel which the Macro created by going to the Webex Devices UI Editor and deleting ``Advanced Presentation Controls``
+1. Delete the ``advance-presentation-controls.js`` Macro from your devices Macro editor.
+2. Delete the UI panel which the Macro created by going to the Webex Devices UI Editor and deleting ``Advance Presentation Controls``
 
 
 ## Support
