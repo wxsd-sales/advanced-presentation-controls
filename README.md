@@ -1,4 +1,4 @@
-# Advance Presentation Controls
+# Advanced Presentation Controls
 This macro gives you greater control over how presenations media is shown on your Webex Devices displays. In a multi monitor configuration you may want to use the Main Display which is normally reserved for displaying the receiving video or call information to show the remote or local presentation. Also it gives you greater control of local preview content, by automatically restoring a local preview which was stopped due to a call or Cloud Proximity share.
 
 ## Overview
