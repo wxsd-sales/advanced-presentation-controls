@@ -354,6 +354,7 @@ function createPanel() {
       <PanelId>advanced_presentation_controls</PanelId>
       <Type>Home</Type>
       <Location>HomeScreenAndCallControls</Location>
+      <Type>Statusbar</Type>
       <Icon>Sliders</Icon>
       <Color>#CF7900</Color>
       <Name>${config.name}</Name>
