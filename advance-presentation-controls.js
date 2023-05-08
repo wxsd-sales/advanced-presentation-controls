@@ -8,7 +8,7 @@
  * Version: 1-0-0
  * Released: 04/15/22
  * 
- * This macro gives you greater control over how presenations media
+ * This macro gives you greater control over how presentation media
  * is shown on your Webex Devices displays. In a multi monitor
  * device configuration you may want to use the Main Display which is
  * normally reserved for displaying the receiving video or call information
